@@ -1,20 +1,22 @@
 // Get today's date and display
-var todayDate = dayjs().format('dddd, MMM DD YYYY');
-$("#currentDay").html(todayDate);
+var dateToday = dayjs().format('dddd, MMM DD YYYY');
+$("#currentDay").html(dateToday);
 
 //wrap the functions in $(document).ready so to ensure that
 // the code isn't run until the browser has finished rendering all the elements
 // in the html.
 $(document).ready(function () {
     // Event listener for save button 
-    $(".saveBtn").on("click", function () {
+    $(".saveBtn").on("click", function (event) {
 
         // Get the value from the text area and also the id of the div to save
-        var text = $(this).siblings(".description").val();
-        var time = $(this).parent().attr("id");
+        var element = event.target
+
+        var task = $(element).siblings(".description").val();
+        var timeOfday = $(element).parent().attr("id");
 
         // Save id of the time block and the value in text area
-        localStorage.setItem(time, text);
+        localStorage.setItem(timeOfday, task);
 
     })
    
@@ -50,16 +52,14 @@ $(document).ready(function () {
     }
 
     // Get saved values from local storage
-    $("#hour-8 .description").val(localStorage.getItem("hour-8"));
-    $("#hour-9 .description").val(localStorage.getItem("hour-9"));
-    $("#hour-10 .description").val(localStorage.getItem("hour-10"));
-    $("#hour-11 .description").val(localStorage.getItem("hour-11"));
-    $("#hour-12 .description").val(localStorage.getItem("hour-12"));
-    $("#hour-13 .description").val(localStorage.getItem("hour-13"));
-    $("#hour-14 .description").val(localStorage.getItem("hour-14"));
-    $("#hour-15 .description").val(localStorage.getItem("hour-15"));
-    $("#hour-16 .description").val(localStorage.getItem("hour-16"));
-    $("#hour-17 .description").val(localStorage.getItem("hour-17"));
+
+    var timeInt = 8
+
+    $("textarea").each(function(i) {
+        this.textContent = localStorage.getItem("hour-" + timeInt);
+        timeInt++
+    });
+
 
     updateTimeBlocks();
 })
